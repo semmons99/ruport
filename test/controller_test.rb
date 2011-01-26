@@ -18,6 +18,10 @@ require File.join(File.expand_path(File.dirname(__FILE__)), "helpers")
 # deprecated, but still has uses in edge cases that we need to support.
 #============================================================================
 
+class EmptyController
+  include Ruport::Controller
+end
+
 class OldSchoolController
   include Ruport::Controller
 
@@ -185,7 +189,7 @@ class TestController < Test::Unit::TestCase
     
 
   def test_formats
-    assert_equal( {}, Ruport::Controller.formats )
+    assert_equal( {}, EmptyController.formats )
     assert_equal( { :text => DummyText },OldSchoolController.formats )
   end
 
@@ -772,7 +776,7 @@ class TestControllerHooks < Test::Unit::TestCase
     def specify_an_unknown_format_error_should_be_raised
 
       assert_raises(Ruport::Controller::UnknownFormatError) do
-        Ruport::Controller.render_foo
+        EmptyController.render_foo
       end
 
     end
