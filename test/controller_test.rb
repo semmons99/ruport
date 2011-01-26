@@ -560,12 +560,16 @@ class TestOptionReaders < Test::Unit::TestCase
     required_option :foo    
   end
 
+  class EmptyFormatter
+    include Ruport::Formatter
+  end
+
    def setup 
      @renderer = ControllerForCheckingOptionReaders.new 
-     @renderer.formatter = Ruport::Formatter.new 
+     @renderer.formatter = EmptyFormatter.new 
      
      @passive = ControllerForCheckingPassivity.new
-     @passive.formatter = Ruport::Formatter.new
+     @passive.formatter = EmptyFormatter.new
    end
    
    def test_options_are_readable
