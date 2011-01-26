@@ -39,7 +39,8 @@ module Ruport
   #     Grouping:
   #       * style (:inline,:justified,:separated,:offset)
   #
-  class Formatter::PDF < Formatter
+  class Formatter::PDF
+    include Formatter
 
     module PDFWriterProxy #:nodoc:
       def method_missing(id,*args)

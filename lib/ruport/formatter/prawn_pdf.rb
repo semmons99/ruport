@@ -1,5 +1,6 @@
 module Ruport
-  class Formatter::PrawnPDF < Formatter
+  class Formatter::PrawnPDF
+    include Formatter
 
     renders :prawn_pdf, :for =>[Controller::Row, Controller::Table,
                               Controller::Group, Controller::Grouping]

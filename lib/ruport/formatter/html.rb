@@ -23,7 +23,8 @@ module Ruport
   #
   # <tt>:style</tt> Used for grouping (:inline, :justified)
   #
-  class Formatter::HTML < Formatter    
+  class Formatter::HTML
+    include Formatter    
     
     renders :html, :for => [ Controller::Row, Controller::Table,
                              Controller::Group, Controller::Grouping ]

@@ -43,7 +43,8 @@ module Ruport
   #
   # <tt>:ignore_table_width:</tt> When set to true, outputs full table without
   # truncating it.  Useful for file output.
-  class Formatter::Text < Formatter
+  class Formatter::Text
+    include Formatter
    
     renders [:txt, :text], :for => [ Controller::Row, Controller::Table,
                                      Controller::Group, Controller::Grouping ]

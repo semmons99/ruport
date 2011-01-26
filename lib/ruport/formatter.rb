@@ -58,7 +58,7 @@ module Ruport
   #   The reversed text will follow
   #   elppa
   #
-  class Formatter
+  module Formatter
 
     # Provides shortcuts so that you can use Ruport's default rendering
     # capabilities within your custom formatters
@@ -137,46 +137,6 @@ module Ruport
     # by the hash provided.
     attr_writer :options
 
-    # Registers the formatter with one or more Controllers.
-    #
-    #   renders :pdf, :for => MyController
-    #   render :text, :for => [MyController,YourController]
-    #   renders [:csv,:html], :for => YourController
-    #
-    def self.renders(fmts,options={})
-      Array(fmts).each do |format|
-        Array(options[:for]).each do |o|
-          o.send(:add_format,self,format)
-          formats << format unless formats.include?(format)
-        end
-      end
-    end
-
-    # Allows you to implement stages in your formatter using the
-    # following syntax:
-    #
-    #   class ReversedText < Ruport::Formatter
-    #      renders :txt, :for => ReverseController
-    #
-    #      build :reversed_header do
-    #         output << "#{options.header_text}\n"
-    #         output << "The reversed text will follow\n"
-    #      end
-    #
-    #      build :reversed_body do
-    #         output << data.reverse << "\n"
-    #      end
-    #   end
-    #
-    def self.build(stage,&block)
-      define_method "build_#{stage}", &block
-    end
-
-    # Gives a list of formats registered for this formatter.
-    def self.formats
-      @formats ||= []
-    end
-
     # Returns the template currently set for this formatter.
     def template
       Template[options.template] rescue nil || Template[:default]
@@ -210,13 +170,6 @@ module Ruport
       File.open(filename,"w") {|f| f << output }
     end
 
-    # Use to define that your formatter should save in binary format
-    def self.save_as_binary_file
-      define_method :save_output do |filename|
-        File.open(filename,"wb") {|f| f << output }
-      end
-    end
-
     # Evaluates the string using ERB and returns the results.
     #
     # If <tt>:binding</tt> is specified, it will evaluate the template
@@ -243,6 +196,61 @@ module Ruport
       else
         super
       end
+    end
+
+    module ClassMethods
+
+      # Registers the formatter with one or more Controllers.
+      #
+      #   renders :pdf, :for => MyController
+      #   render :text, :for => [MyController,YourController]
+      #   renders [:csv,:html], :for => YourController
+      #
+      def renders(fmts,options={})
+        Array(fmts).each do |format|
+          Array(options[:for]).each do |o|
+            o.send(:add_format,self,format)
+            formats << format unless formats.include?(format)
+          end
+        end
+      end
+
+      # Allows you to implement stages in your formatter using the
+      # following syntax:
+      #
+      #   class ReversedText < Ruport::Formatter
+      #      renders :txt, :for => ReverseController
+      #
+      #      build :reversed_header do
+      #         output << "#{options.header_text}\n"
+      #         output << "The reversed text will follow\n"
+      #      end
+      #
+      #      build :reversed_body do
+      #         output << data.reverse << "\n"
+      #      end
+      #   end
+      #
+      def build(stage,&block)
+        define_method "build_#{stage}", &block
+      end
+
+      # Gives a list of formats registered for this formatter.
+      def formats
+        @formats ||= []
+      end
+
+      # Use to define that your formatter should save in binary format
+      def save_as_binary_file
+        define_method :save_output do |filename|
+          File.open(filename,"wb") {|f| f << output }
+        end
+      end
+
+    end
+
+    def self.included(base)
+      base.extend(ClassMethods)
     end
   end
 end

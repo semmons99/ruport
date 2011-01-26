@@ -29,7 +29,8 @@ module Ruport
   #
   # <tt>:show_group_headers</tt> True by default
   #
-  class Formatter::CSV < Formatter
+  class Formatter::CSV
+    include Ruport::Formatter
     
     renders :csv, :for => [ Controller::Row,   Controller::Table, 
                             Controller::Group, Controller::Grouping ]

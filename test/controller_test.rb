@@ -45,7 +45,8 @@ end
 # This formatter implements some junk output so we can be sure
 # that the hooks are being set up right.  Perhaps these could
 # be replaced by mock objects in the future.
-class DummyText < Ruport::Formatter
+class DummyText
+  include Ruport::Formatter
   
   renders :text, :for => OldSchoolController
   
@@ -71,7 +72,8 @@ class DummyText < Ruport::Formatter
 end   
 
 # This formatter modifies the (String) data object passed to it
-class Destructive < Ruport::Formatter
+class Destructive
+  include Ruport::Formatter
 
   def prepare_document; end
 
@@ -88,12 +90,16 @@ class Destructive < Ruport::Formatter
 end
 
 
-class VanillaBinary < Ruport::Formatter
+class VanillaBinary
+  include Ruport::Formatter
+
   renders :bin, :for => VanillaController
   save_as_binary_file
 end 
 
-class SpecialFinalize < Ruport::Formatter
+class SpecialFinalize
+  include Ruport::Formatter
+
   renders :with_finalize, :for => VanillaController
   
   def finalize
@@ -240,7 +246,9 @@ end
 
 class TestFormatterUsingBuild < Test::Unit::TestCase
   # This formatter uses the build syntax
-  class UsesBuild < Ruport::Formatter
+  class UsesBuild
+    include Ruport::Formatter
+
      renders :text_using_build, :for => VanillaController 
      
      build :header do
@@ -450,7 +458,8 @@ end
 
 class TestMultiPurposeFormatter < Test::Unit::TestCase
   # This provides a way to check the multi-format hooks for the Controller
-  class MultiPurposeFormatter < Ruport::Formatter 
+  class MultiPurposeFormatter
+    include Ruport::Formatter 
 
      renders [:html,:text], :for => VanillaController
 
@@ -501,7 +510,8 @@ end
 
 
 class TestFormatterErbHelper < Test::Unit::TestCase
-  class ErbFormatter < Ruport::Formatter
+  class ErbFormatter
+    include Ruport::Formatter
      
     renders :terb, :for  => VanillaController
     
@@ -583,7 +593,9 @@ class TestSetupOrdering < Test::Unit::TestCase
     end        
   end           
   
-  class BasicFormatter < Ruport::Formatter 
+  class BasicFormatter
+    include Ruport::Formatter 
+
     renders :text, :for => ControllerWithSetup
     
     def build_bar
@@ -602,7 +614,9 @@ class TestSetupOrdering < Test::Unit::TestCase
   
 end
 
-class CustomFormatter < Ruport::Formatter
+class CustomFormatter
+  include Ruport::Formatter
+
   def custom_helper
     output << "Custom!"
   end
@@ -674,7 +688,9 @@ class MisbehavingController
   include Ruport::Controller
 end
 
-class MisbehavingFormatter < Ruport::Formatter
+class MisbehavingFormatter
+  include Ruport::Formatter
+
   renders :text, :for => MisbehavingController
   def initialize
     super
