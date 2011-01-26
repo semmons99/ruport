@@ -29,7 +29,9 @@ module Ruport
   # * build_group_body
   # * build_group_footer
   #
-  class Controller::Group < Controller
+  class Controller::Group
+    include Controller
+
     options { |o| o.show_table_headers = true }
 
     stage :group_header, :group_body, :group_footer
@@ -57,7 +59,9 @@ module Ruport
   # * build_grouping_footer
   # * finalize_grouping
   #
-  class Controller::Grouping < Controller
+  class Controller::Grouping
+    include Controller
+
     options do |o| 
       o.show_group_headers = true 
       o.style = :inline

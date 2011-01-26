@@ -17,7 +17,9 @@ module Ruport
   #  
   # * build_row
   #
-  class Controller::Row < Controller
+  class Controller::Row
+    include Controller
+
     stage :row
   end
 
@@ -42,7 +44,9 @@ module Ruport
   # * build_table_footer
   # * finalize_table
   #
-  class Controller::Table < Controller
+  class Controller::Table
+    include Controller
+
     options { |o| o.show_table_headers = true }
 
     prepare :table
