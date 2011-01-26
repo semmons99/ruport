@@ -449,6 +449,17 @@ module Ruport::Controller
       return @options
     end
 
+    # Provides a shortcut to render() to allow
+    # render(:csv) to become render_csv
+    #
+    def method_missing(id,*args,&block)
+      id.to_s =~ /^render_(.*)/
+      unless args[0].kind_of? Hash
+        args = [ (args[1] || {}).merge(:data => args[0]) ]
+      end
+      $1 ? render($1.to_sym,*args,&block) : super
+    end
+
     private
     
     # Creates a new instance of the controller and sets it to use the specified
@@ -539,17 +550,6 @@ module Ruport::Controller
     return @formatter
   end
 
-  # Provides a shortcut to render() to allow
-  # render(:csv) to become render_csv
-  #
-  def self.method_missing(id,*args,&block)
-    id.to_s =~ /^render_(.*)/
-    unless args[0].kind_of? Hash
-      args = [ (args[1] || {}).merge(:data => args[0]) ]
-    end
-    $1 ? render($1.to_sym,*args,&block) : super
-  end
-  
   private  
 
   # Called automatically when the report is rendered. Uses the
