@@ -329,7 +329,9 @@ class TestPDFFormatterHelpers < Test::Unit::TestCase
   end
 end
 
-class SimpleController < Ruport::Controller
+class SimpleController
+  include Ruport::Controller
+
   stage :foo
 
   class PDF < Ruport::Formatter::PDF

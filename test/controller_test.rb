@@ -18,7 +18,8 @@ require File.join(File.expand_path(File.dirname(__FILE__)), "helpers")
 # deprecated, but still has uses in edge cases that we need to support.
 #============================================================================
 
-class OldSchoolController < Ruport::Controller
+class OldSchoolController
+  include Ruport::Controller
 
   def run
     formatter do
@@ -30,7 +31,9 @@ class OldSchoolController < Ruport::Controller
 
 end               
 
-class VanillaController < Ruport::Controller
+class VanillaController
+  include Ruport::Controller
+
   stage :header,:body,:footer
 end
 
@@ -290,7 +293,9 @@ end
 
 class TestControllerWithManyHooks < Test::Unit::TestCase
   # This provides a way to check several hooks that controllers supports
-  class ControllerWithManyHooks < Ruport::Controller
+  class ControllerWithManyHooks
+    include Ruport::Controller
+
     add_format DummyText, :text
     add_format Destructive, :destructive
 
@@ -393,7 +398,9 @@ end
 
 class TestControllerWithRunHook < Test::Unit::TestCase
 
-  class ControllerWithRunHook < Ruport::Controller
+  class ControllerWithRunHook
+    include Ruport::Controller
+
     add_format DummyText, :text
 
     required_option :foo,:bar
@@ -524,11 +531,15 @@ end
 
 class TestOptionReaders < Test::Unit::TestCase
   
-  class ControllerForCheckingOptionReaders < Ruport::Controller
+  class ControllerForCheckingOptionReaders
+    include Ruport::Controller
+
     required_option :foo  
   end 
   
-  class ControllerForCheckingPassivity < Ruport::Controller
+  class ControllerForCheckingPassivity
+    include Ruport::Controller
+
     def foo
       "apples"
     end
@@ -559,7 +570,9 @@ end
      
 class TestSetupOrdering < Test::Unit::TestCase
    
-  class ControllerWithSetup < Ruport::Controller
+  class ControllerWithSetup
+    include Ruport::Controller
+
     stage :bar
     def setup
       options.foo.capitalize!
@@ -591,7 +604,8 @@ class CustomFormatter < Ruport::Formatter
   end
 end
 
-class ControllerWithAnonymousFormatters < Ruport::Controller
+class ControllerWithAnonymousFormatters
+  include Ruport::Controller
 
   stage :report
 
@@ -652,7 +666,8 @@ end
 
 # Used to ensure that problems in controller code aren't mistakenly intercepted
 # by Ruport.
-class MisbehavingController < Ruport::Controller
+class MisbehavingController
+  include Ruport::Controller
 end
 
 class MisbehavingFormatter < Ruport::Formatter
