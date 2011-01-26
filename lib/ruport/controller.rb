@@ -10,7 +10,7 @@
 # controllers for different kinds of tasks.  See Controller::Table for a
 # tabular data controller.  
 #
-class Ruport::Controller
+module Ruport::Controller
   
   class RequiredOptionNotSet < RuntimeError #:nodoc:
   end
@@ -185,9 +185,7 @@ class Ruport::Controller
     end
   end
 
-  
-  
-  class << self
+  module ClassMethods
 
     # Returns a hash that maps format names to their formatter classes, for use
     # with the formatter shortcut.  Supported formats are :html, :csv, :pdf, and
@@ -489,7 +487,11 @@ class Ruport::Controller
     def add_format(format,name=nil)
       formats[name] = format
     end
-    
+  
+  end
+
+  def self.included(base)
+    base.extend(ClassMethods)
   end
   
   # The name of format being used.
