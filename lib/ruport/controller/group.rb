@@ -17,10 +17,14 @@
 # * build_group_body
 # * build_group_footer
 #
-class Ruport::Controller::Group
-  include Ruport::Controller
+module Ruport
+  module Controller
+    class Group
+      include Controller
 
-  options { |o| o.show_table_headers = true }
+      options { |o| o.show_table_headers = true }
 
-  stage :group_header, :group_body, :group_footer
+      stage :group_header, :group_body, :group_footer
+    end
+  end
 end

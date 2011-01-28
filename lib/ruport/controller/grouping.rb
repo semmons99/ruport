@@ -31,15 +31,19 @@
 # * build_grouping_footer
 # * finalize_grouping
 #
-class Ruport::Controller::Grouping
-  include Ruport::Controller
+module Ruport
+  module Controller
+    class Grouping
+      include Controller
 
-  options do |o| 
-    o.show_group_headers = true 
-    o.style = :inline
+      options do |o| 
+        o.show_group_headers = true 
+        o.style = :inline
+      end
+
+      stage :grouping_header, :grouping_body, :grouping_footer
+      
+      finalize :grouping
+    end
   end
-
-  stage :grouping_header, :grouping_body, :grouping_footer
-  
-  finalize :grouping
 end

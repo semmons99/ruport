@@ -10,8 +10,12 @@
 #  
 # * build_row
 #
-class Ruport::Controller::Row
-  include Ruport::Controller
+module Ruport
+  module Controller
+    class Row
+      include Controller
 
-  stage :row
+      stage :row
+    end
+  end
 end

@@ -142,46 +142,50 @@ class Ruport::Formatter::TemplateNotDefined < StandardError; end
 #                   available to
 #                   FasterCSV.new
 #
-class Ruport::Formatter::Template < Ruport::Controller::Options
-  
-  # Returns all existing templates in a hash keyed by the template names.
-  def self.templates
-    @templates ||= Hash.new 
+module Ruport
+  module Formatter
+    class Template < Controller::Options
+      
+      # Returns all existing templates in a hash keyed by the template names.
+      def self.templates
+        @templates ||= Hash.new 
+      end
+      
+      # Creates a new template with a name given by <tt>label</tt>.
+      #
+      # Example:
+      #
+      #   Ruport::Formatter::Template.create(:simple) do |t|
+      #     t.page_layout = :landscape
+      #     t.grouping_style = :offset
+      #   end
+      #
+      # You can inherit all the options set in a template by using the :base option
+      # and providing an existing template name to use as the base.
+      #
+      # Example:
+      #
+      #   Ruport::Formatter::Template.create(:derived, :base => :simple)
+      #
+      def self.create(label,opts={})
+        if opts[:base]
+          obj = Marshal.load(Marshal.dump(self[opts[:base]]))
+        else
+          obj = new
+        end
+        yield(obj) if block_given?
+        templates[label] = obj
+      end
+      
+      # Returns an existing template with the provided name (label).
+      def self.[](label) 
+        templates[label] or raise Ruport::Formatter::TemplateNotDefined
+      end
+      
+      # Returns the default template.
+      def self.default
+        templates[:default]
+      end
+    end   
   end
-  
-  # Creates a new template with a name given by <tt>label</tt>.
-  #
-  # Example:
-  #
-  #   Ruport::Formatter::Template.create(:simple) do |t|
-  #     t.page_layout = :landscape
-  #     t.grouping_style = :offset
-  #   end
-  #
-  # You can inherit all the options set in a template by using the :base option
-  # and providing an existing template name to use as the base.
-  #
-  # Example:
-  #
-  #   Ruport::Formatter::Template.create(:derived, :base => :simple)
-  #
-  def self.create(label,opts={})
-    if opts[:base]
-      obj = Marshal.load(Marshal.dump(self[opts[:base]]))
-    else
-      obj = new
-    end
-    yield(obj) if block_given?
-    templates[label] = obj
-  end
-  
-  # Returns an existing template with the provided name (label).
-  def self.[](label) 
-    templates[label] or raise Ruport::Formatter::TemplateNotDefined
-  end
-  
-  # Returns the default template.
-  def self.default
-    templates[:default]
-  end
-end   
+end

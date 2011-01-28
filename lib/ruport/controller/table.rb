@@ -24,14 +24,18 @@
 # * build_table_footer
 # * finalize_table
 #
-class Ruport::Controller::Table
-  include Ruport::Controller
+module Ruport
+  module Controller
+    class Table
+      include Controller
 
-  options { |o| o.show_table_headers = true }
+      options { |o| o.show_table_headers = true }
 
-  prepare :table
-  
-  stage :table_header, :table_body, :table_footer
+      prepare :table
+      
+      stage :table_header, :table_body, :table_footer
 
-  finalize :table
+      finalize :table
+    end
+  end
 end
