@@ -20,40 +20,7 @@ module Ruport::Controller
   end
   class ControllerNotSetError < RuntimeError #:nodoc:
   end
-                                          
-  require "ostruct"              
   
-  # Structure for holding controller options.  
-  # Simplified version of HashWithIndifferentAccess
-  class Options < OpenStruct 
-           
-    if RUBY_VERSION < "1.9"
-      private :id   
-    end
-    
-    # Returns a Hash object.  Use this if you need methods other than []
-    def to_hash
-      @table
-    end            
-    # Indifferent lookup of an attribute, e.g.
-    #
-    #  options[:foo] == options["foo"]
-    def [](key)
-      send(key)
-    end 
-    
-    # Sets an attribute, with indifferent access.
-    #  
-    #  options[:foo] = "bar"  
-    #
-    #  options[:foo] == options["foo"] #=> true
-    #  options["foo"] == options.foo #=> true
-    #  options.foo #=> "bar"
-    def []=(key,value)
-      send("#{key}=",value)
-    end
-  end
-   
   module ClassMethods
 
     # Returns a hash that maps format names to their formatter classes, for use
@@ -483,6 +450,7 @@ module Ruport::Controller
 
 end
 
+require "ruport/controller/options"
 require "ruport/controller/hooks"
 require "ruport/controller/table"
 require "ruport/controller/grouping"         
