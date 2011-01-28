@@ -3,7 +3,7 @@
 # Copyright December 2006, Gregory Brown.  All Rights Reserved.
 #
 # This is free software. Please see the LICENSE and COPYING files for details.
-
+require 'ruport/controller/errors'
 
 # This class implements the core controller for Ruport's formatting system.
 # It is designed to implement the low level tools necessary to build report
@@ -11,15 +11,6 @@
 # tabular data controller.  
 #
 module Ruport::Controller
-  
-  class RequiredOptionNotSet < RuntimeError #:nodoc:
-  end
-  class UnknownFormatError < RuntimeError #:nodoc:
-  end
-  class StageAlreadyDefinedError < RuntimeError #:nodoc: 
-  end
-  class ControllerNotSetError < RuntimeError #:nodoc:
-  end
   
   module ClassMethods
 
