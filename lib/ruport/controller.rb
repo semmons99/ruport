@@ -443,6 +443,7 @@ end
 
 require "ruport/controller/options"
 require "ruport/controller/hooks"
+require "ruport/controller/row"
 require "ruport/controller/table"
 require "ruport/controller/group"
 require "ruport/controller/grouping"         
